@@ -1,14 +1,47 @@
 
 import React, { useState } from 'react';
-import { Search, Calendar, Users } from 'lucide-react';
+import { Search, Calendar, Users, Moon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import DatePicker from '../common/DatePicker';
+import DateRangePicker from '../common/DateRangePicker';
+import NightSelector from '../common/NightSelector';
+import { DateRange } from 'react-day-picker';
+import { addDays, differenceInDays } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Hero = () => {
   const navigate = useNavigate();
-  const [checkInDate, setCheckInDate] = useState<Date | undefined>();
+  const isMobile = useIsMobile();
+  
+  // Tarih aralığı ve gece sayısı için state tanımlamaları
+  const [dateRange, setDateRange] = useState<DateRange | undefined>({
+    from: new Date(),
+    to: addDays(new Date(), 2)
+  });
+  
+  const [nights, setNights] = useState(2);
   const [guests, setGuests] = useState('2 Kişi');
+  
+  // Tarih aralığı değiştiğinde gece sayısını güncelle
+  const handleDateRangeChange = (range: DateRange | undefined) => {
+    setDateRange(range);
+    if (range?.from && range?.to) {
+      const days = differenceInDays(range.to, range.from);
+      if (days > 0) setNights(days);
+    }
+  };
+  
+  // Gece sayısı değiştiğinde tarih aralığını güncelle
+  const handleNightsChange = (value: number) => {
+    setNights(value);
+    if (dateRange?.from) {
+      const newEndDate = addDays(dateRange.from, value);
+      setDateRange({
+        from: dateRange.from,
+        to: newEndDate
+      });
+    }
+  };
   
   const handleSearch = () => {
     navigate('/bungalovlar');
@@ -24,7 +57,7 @@ const Hero = () => {
           className="w-full h-full object-cover object-center"
         />
         {/* Modern gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent"></div>
       </div>
       
       <div className="container mx-auto px-4 z-10">
@@ -60,16 +93,17 @@ const Hero = () => {
       <div className="absolute bottom-0 left-0 right-0 mx-auto transform translate-y-1/2 z-20">
         <div className="container mx-auto px-4">
           <div className="bg-white/90 backdrop-blur-md rounded-xl shadow-2xl p-4 md:p-6 max-w-4xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+            <div className={`grid gap-4 ${isMobile ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-3'}`}>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Giriş Tarihi</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Tarih Aralığı</label>
+                <DateRangePicker value={dateRange} onChange={handleDateRangeChange} />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Kalınacak Gece Sayısı</label>
                 <div className="flex items-center border rounded-md border-gray-300 p-2 focus-within:border-nature-500 focus-within:ring-1 focus-within:ring-nature-500 bg-white">
-                  <Calendar className="h-5 w-5 text-gray-500 mr-2" />
-                  <DatePicker 
-                    placeholder="Giriş Tarihi" 
-                    value={checkInDate}
-                    onChange={setCheckInDate}
-                  />
+                  <Moon className="h-5 w-5 text-gray-500 mr-2" />
+                  <NightSelector value={nights} onChange={handleNightsChange} min={1} max={30} />
                 </div>
               </div>
               
@@ -91,13 +125,15 @@ const Hero = () => {
                 </div>
               </div>
               
-              <Button 
-                className="w-full bg-nature-500 hover:bg-nature-600 text-white md:h-[42px] shadow-md hover:shadow-lg transition-all"
-                onClick={handleSearch}
-              >
-                <Search className="h-4 w-4 mr-2" />
-                Bungalov Ara
-              </Button>
+              <div className={isMobile ? '' : 'md:col-span-3'}>
+                <Button 
+                  className="w-full bg-nature-500 hover:bg-nature-600 text-white shadow-md hover:shadow-lg transition-all"
+                  onClick={handleSearch}
+                >
+                  <Search className="h-4 w-4 mr-2" />
+                  Bungalov Ara
+                </Button>
+              </div>
             </div>
           </div>
         </div>
