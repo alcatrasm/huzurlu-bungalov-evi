@@ -48,7 +48,7 @@ const Hero = () => {
   };
   
   return (
-    <section className="relative h-[85vh] lg:h-[90vh] flex items-center">
+    <section className="relative h-[85vh] lg:h-[90vh] flex items-center overflow-visible">
       {/* Background image with modern overlay */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <img 
@@ -89,10 +89,10 @@ const Hero = () => {
         </div>
       </div>
       
-      {/* Search form with glass effect */}
-      <div className="absolute bottom-0 left-0 right-0 mx-auto transform translate-y-1/2 z-20">
-        <div className="container mx-auto px-4">
-          <div className="bg-white/90 backdrop-blur-md rounded-xl shadow-2xl p-4 md:p-6 max-w-4xl mx-auto">
+      {/* Search form with glass effect - now more transparent and better positioned */}
+      <div className="absolute left-0 right-0 mx-auto z-10 bottom-8 md:bottom-10 lg:bottom-12 px-4">
+        <div className="container mx-auto">
+          <div className="bg-white/70 backdrop-blur-md rounded-xl shadow-lg p-4 md:p-6 max-w-4xl mx-auto transition-all hover:bg-white/80">
             <div className={`grid gap-4 ${isMobile ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-3'}`}>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Tarih Aralığı</label>
