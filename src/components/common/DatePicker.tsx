@@ -22,7 +22,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ placeholder = 'Tarih seçin' })
     <Popover>
       <PopoverTrigger asChild>
         <Button
-          variant="unstyled"
+          variant="ghost"
           className={cn(
             'w-full flex justify-start px-0 text-left font-normal',
             !date && 'text-muted-foreground'
