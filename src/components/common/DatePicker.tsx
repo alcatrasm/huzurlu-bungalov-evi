@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { format } from 'date-fns';
+import { format, addDays } from 'date-fns';
 import { Calendar as CalendarIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -13,10 +13,21 @@ import {
 
 interface DatePickerProps {
   placeholder?: string;
+  value?: Date | undefined;
+  onChange?: (date: Date | undefined) => void;
 }
 
-const DatePicker: React.FC<DatePickerProps> = ({ placeholder = 'Tarih seçin' }) => {
-  const [date, setDate] = React.useState<Date | undefined>();
+const DatePicker: React.FC<DatePickerProps> = ({ 
+  placeholder = 'Tarih seçin',
+  value,
+  onChange 
+}) => {
+  const [date, setDate] = React.useState<Date | undefined>(value);
+  
+  const handleSelect = (selectedDate: Date | undefined) => {
+    setDate(selectedDate);
+    if (onChange) onChange(selectedDate);
+  };
 
   return (
     <Popover>
@@ -35,9 +46,10 @@ const DatePicker: React.FC<DatePickerProps> = ({ placeholder = 'Tarih seçin' })
         <Calendar
           mode="single"
           selected={date}
-          onSelect={setDate}
+          onSelect={handleSelect}
           initialFocus
           className="p-3"
+          disabled={(date) => date < new Date()}
         />
       </PopoverContent>
     </Popover>
