@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
@@ -11,24 +10,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Loader2, Save } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
-
-interface ProfileData {
-  id: string;
-  first_name: string | null;
-  last_name: string | null;
-  phone: string | null;
-}
-
-interface Reservation {
-  id: string;
-  created_at: string;
-  check_in: string;
-  check_out: string;
-  guests: number;
-  status: string;
-  bungalow_name: string;
-  total_price: number;
-}
+import { Profile as ProfileType } from '@/models/Profile';
+import { Reservation as ReservationType } from '@/models/Reservation';
 
 const Profile = () => {
   const { user } = useAuth();
@@ -36,13 +19,13 @@ const Profile = () => {
   const navigate = useNavigate();
   
   const [loading, setLoading] = useState(true);
-  const [profileData, setProfileData] = useState<ProfileData | null>(null);
+  const [profileData, setProfileData] = useState<ProfileType | null>(null);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [phone, setPhone] = useState('');
   const [isSaving, setIsSaving] = useState(false);
   
-  const [reservations, setReservations] = useState<Reservation[]>([]);
+  const [reservations, setReservations] = useState<ReservationType[]>([]);
   const [reservationsLoading, setReservationsLoading] = useState(true);
   
   // Fetch user profile data
@@ -60,7 +43,7 @@ const Profile = () => {
         if (error) throw error;
         
         if (data) {
-          setProfileData(data);
+          setProfileData(data as ProfileType);
           setFirstName(data.first_name || '');
           setLastName(data.last_name || '');
           setPhone(data.phone || '');
@@ -84,13 +67,7 @@ const Profile = () => {
         const { data, error } = await supabase
           .from('reservations')
           .select(`
-            id,
-            created_at,
-            check_in,
-            check_out,
-            guests,
-            status,
-            total_price,
+            *,
             bungalows (name)
           `)
           .eq('user_id', user.id)
@@ -100,15 +77,9 @@ const Profile = () => {
         
         if (data) {
           const formattedReservations = data.map(item => ({
-            id: item.id,
-            created_at: item.created_at,
-            check_in: item.check_in,
-            check_out: item.check_out,
-            guests: item.guests,
-            status: item.status,
+            ...item,
             bungalow_name: item.bungalows?.name || 'Bilinmiyor',
-            total_price: item.total_price
-          }));
+          })) as ReservationType[];
           
           setReservations(formattedReservations);
         }
@@ -128,15 +99,17 @@ const Profile = () => {
     setIsSaving(true);
     
     try {
+      const updateData = {
+        id: user.id,
+        first_name: firstName,
+        last_name: lastName,
+        phone: phone,
+        updated_at: new Date().toISOString()
+      };
+      
       const { error } = await supabase
         .from('profiles')
-        .upsert({
-          id: user.id,
-          first_name: firstName,
-          last_name: lastName,
-          phone: phone,
-          updated_at: new Date().toISOString()
-        });
+        .upsert(updateData);
         
       if (error) throw error;
       

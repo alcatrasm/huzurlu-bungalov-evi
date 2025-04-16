@@ -9,7 +9,152 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      bungalows: {
+        Row: {
+          available: boolean
+          capacity_adults: number
+          capacity_children: number
+          created_at: string | null
+          description: string | null
+          features: Json | null
+          id: string
+          images: Json | null
+          name: string
+          price_per_night: number
+          short_description: string | null
+          size: number
+          slug: string
+          updated_at: string | null
+        }
+        Insert: {
+          available?: boolean
+          capacity_adults?: number
+          capacity_children?: number
+          created_at?: string | null
+          description?: string | null
+          features?: Json | null
+          id?: string
+          images?: Json | null
+          name: string
+          price_per_night: number
+          short_description?: string | null
+          size: number
+          slug: string
+          updated_at?: string | null
+        }
+        Update: {
+          available?: boolean
+          capacity_adults?: number
+          capacity_children?: number
+          created_at?: string | null
+          description?: string | null
+          features?: Json | null
+          id?: string
+          images?: Json | null
+          name?: string
+          price_per_night?: number
+          short_description?: string | null
+          size?: number
+          slug?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string | null
+          first_name: string | null
+          id: string
+          last_name: string | null
+          phone: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          first_name?: string | null
+          id: string
+          last_name?: string | null
+          phone?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          phone?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      reservations: {
+        Row: {
+          bungalow_id: string
+          check_in: string
+          check_out: string
+          created_at: string | null
+          guests: number
+          id: string
+          status: string
+          total_price: number
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          bungalow_id: string
+          check_in: string
+          check_out: string
+          created_at?: string | null
+          guests?: number
+          id?: string
+          status?: string
+          total_price: number
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          bungalow_id?: string
+          check_in?: string
+          check_out?: string
+          created_at?: string | null
+          guests?: number
+          id?: string
+          status?: string
+          total_price?: number
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reservations_bungalow_id_fkey"
+            columns: ["bungalow_id"]
+            isOneToOne: false
+            referencedRelation: "bungalows"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          created_at: string | null
+          id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          role: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

@@ -3,6 +3,7 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Session, User } from '@supabase/supabase-js';
 import { useToast } from "@/components/ui/use-toast";
+import { UserRole } from '@/models/UserRole';
 
 type AuthContextType = {
   session: Session | null;
@@ -35,15 +36,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         // Check if user is admin
         if (session?.user) {
           setTimeout(async () => {
-            const { data, error } = await supabase
-              .from('user_roles')
-              .select('role')
-              .eq('user_id', session.user.id)
-              .single();
-              
-            if (data && data.role === 'admin') {
-              setIsAdmin(true);
-            } else {
+            try {
+              const { data, error } = await supabase
+                .from('user_roles')
+                .select('*')
+                .eq('user_id', session.user.id)
+                .single();
+                
+              if (data && data.role === 'admin') {
+                setIsAdmin(true);
+              } else {
+                setIsAdmin(false);
+              }
+            } catch (error) {
+              console.error('Error checking admin status:', error);
               setIsAdmin(false);
             }
           }, 0);
@@ -63,13 +69,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (session?.user) {
         supabase
           .from('user_roles')
-          .select('role')
+          .select('*')
           .eq('user_id', session.user.id)
           .single()
-          .then(({ data }) => {
-            if (data && data.role === 'admin') {
+          .then(({ data, error }) => {
+            if (!error && data && data.role === 'admin') {
               setIsAdmin(true);
             }
+          })
+          .catch(error => {
+            console.error('Error checking admin status:', error);
           });
       }
     });
