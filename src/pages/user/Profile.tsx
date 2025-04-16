@@ -28,7 +28,6 @@ const Profile = () => {
   const [reservations, setReservations] = useState<ReservationType[]>([]);
   const [reservationsLoading, setReservationsLoading] = useState(true);
   
-  // Fetch user profile data
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -58,7 +57,6 @@ const Profile = () => {
     fetchProfile();
   }, [user]);
   
-  // Fetch user reservations
   useEffect(() => {
     const fetchReservations = async () => {
       try {

@@ -1,4 +1,16 @@
 
+export interface BungalowImage {
+  id: string;
+  url: string;
+  alt?: string;
+}
+
+export interface BungalowFeature {
+  id: string;
+  name: string;
+  icon: string;
+}
+
 export interface Bungalow {
   id: string;
   name: string;
@@ -11,10 +23,7 @@ export interface Bungalow {
     children: number;
   };
   size: number;
-  features: string[];
-  images: {
-    url: string;
-    alt?: string;
-  }[];
+  features: BungalowFeature[];
+  images: BungalowImage[];
   available: boolean;
 }

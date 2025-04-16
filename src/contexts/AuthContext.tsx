@@ -77,7 +77,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
               setIsAdmin(true);
             }
           })
-          .catch(error => {
+          .catch((error) => {
             console.error('Error checking admin status:', error);
           });
       }

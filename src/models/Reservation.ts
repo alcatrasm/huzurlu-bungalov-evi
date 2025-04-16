@@ -13,4 +13,5 @@ export interface Reservation {
   bungalows?: {
     name: string;
   };
+  bungalow_name?: string; // Add this field
 }

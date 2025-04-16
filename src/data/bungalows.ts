@@ -1,5 +1,5 @@
 
-import { Bungalow } from '../models/Bungalow';
+import { Bungalow, BungalowFeature, BungalowImage } from '../models/Bungalow';
 
 export const bungalows: Bungalow[] = [
   {
@@ -37,7 +37,8 @@ export const bungalows: Bungalow[] = [
       { id: "f3", name: "Mini Mutfak", icon: "utensils" },
       { id: "f4", name: "Ücretsiz Wi-Fi", icon: "wifi" },
       { id: "f5", name: "Doğa Manzarası", icon: "tree" }
-    ]
+    ],
+    available: true
   },
   {
     id: "2",
@@ -74,7 +75,8 @@ export const bungalows: Bungalow[] = [
       { id: "f3", name: "Jakuzi", icon: "bath" },
       { id: "f4", name: "Ücretsiz Wi-Fi", icon: "wifi" },
       { id: "f5", name: "Tam Donanımlı Mutfak", icon: "utensils" }
-    ]
+    ],
+    available: true
   },
   {
     id: "3",
@@ -111,7 +113,8 @@ export const bungalows: Bungalow[] = [
       { id: "f3", name: "Şömine", icon: "flame" },
       { id: "f4", name: "Geniş Teras", icon: "layout" },
       { id: "f5", name: "Ücretsiz Wi-Fi", icon: "wifi" }
-    ]
+    ],
+    available: true
   }
 ];
 
