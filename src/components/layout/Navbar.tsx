@@ -1,11 +1,21 @@
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, User, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/contexts/AuthContext';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, signOut, isAdmin } = useAuth();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -28,6 +38,53 @@ const Navbar = () => {
           <NavLink to="/galeri">Galeri</NavLink>
           <NavLink to="/iletisim">İletişim</NavLink>
         </nav>
+
+        {/* User menu for desktop */}
+        <div className="hidden md:flex items-center gap-4">
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                  <Avatar>
+                    <AvatarFallback className="bg-nature-100 text-nature-800">
+                      {user.email?.charAt(0).toUpperCase() || 'U'}
+                    </AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem asChild>
+                  <Link to="/profil">Profilim</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/profil/rezervasyonlarim">Rezervasyonlarım</Link>
+                </DropdownMenuItem>
+                {isAdmin && (
+                  <>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem asChild>
+                      <Link to="/yonetim">Yönetim Paneli</Link>
+                    </DropdownMenuItem>
+                  </>
+                )}
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => signOut()} className="text-red-600">
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Çıkış Yap</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <>
+              <Button asChild variant="ghost">
+                <Link to="/giris">Giriş Yap</Link>
+              </Button>
+              <Button asChild className="bg-nature-500 hover:bg-nature-600">
+                <Link to="/kayit">Kayıt Ol</Link>
+              </Button>
+            </>
+          )}
+        </div>
 
         {/* Mobile navigation toggle */}
         <div className="md:hidden flex items-center">
@@ -54,6 +111,40 @@ const Navbar = () => {
             <MobileNavLink to="/hakkimizda" onClick={toggleMenu}>Hakkımızda</MobileNavLink>
             <MobileNavLink to="/galeri" onClick={toggleMenu}>Galeri</MobileNavLink>
             <MobileNavLink to="/iletisim" onClick={toggleMenu}>İletişim</MobileNavLink>
+            
+            <div className="border-t border-gray-200 my-2"></div>
+            
+            {user ? (
+              <>
+                <MobileNavLink to="/profil" onClick={toggleMenu}>
+                  <User className="h-4 w-4 mr-2" />
+                  Profilim
+                </MobileNavLink>
+                <MobileNavLink to="/profil/rezervasyonlarim" onClick={toggleMenu}>
+                  Rezervasyonlarım
+                </MobileNavLink>
+                {isAdmin && (
+                  <MobileNavLink to="/yonetim" onClick={toggleMenu}>
+                    Yönetim Paneli
+                  </MobileNavLink>
+                )}
+                <button 
+                  onClick={() => {
+                    signOut();
+                    toggleMenu();
+                  }} 
+                  className="w-full text-left px-3 py-2 text-base font-medium text-red-600 hover:bg-red-50 rounded-md flex items-center"
+                >
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Çıkış Yap
+                </button>
+              </>
+            ) : (
+              <>
+                <MobileNavLink to="/giris" onClick={toggleMenu}>Giriş Yap</MobileNavLink>
+                <MobileNavLink to="/kayit" onClick={toggleMenu}>Kayıt Ol</MobileNavLink>
+              </>
+            )}
           </div>
         </div>
       )}
@@ -75,7 +166,7 @@ const NavLink = ({ to, children }: { to: string; children: React.ReactNode }) =>
 const MobileNavLink = ({ to, children, onClick }: { to: string; children: React.ReactNode; onClick: () => void }) => (
   <Link
     to={to}
-    className="block px-3 py-2 text-base font-medium text-gray-800 hover:bg-nature-50 hover:text-nature-500 rounded-md"
+    className="flex items-center px-3 py-2 text-base font-medium text-gray-800 hover:bg-nature-50 hover:text-nature-500 rounded-md"
     onClick={onClick}
   >
     {children}

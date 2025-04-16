@@ -1,196 +1,308 @@
 
-import React from 'react';
-import Layout from '../components/layout/Layout';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import React, { useState } from 'react';
+import Layout from '@/components/layout/Layout';
+import { Button } from '@/components/ui/button';
+import { 
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 
-// Galeri resimleri için demo veriler
-const galleryImages = {
-  bungalow: [
-    {
-      id: 1,
-      url: 'https://images.unsplash.com/photo-1518495973542-4542c06a5843',
-      alt: 'Orman Bungalovlar',
-      caption: 'Orman Manzaralı Lüks Bungalov'
-    },
-    {
-      id: 2,
-      url: 'https://images.unsplash.com/photo-1482938289607-e9573fc25ebb',
-      alt: 'Göl Kenarı Bungalov',
-      caption: 'Göl Kenarında Romantik Konaklama'
-    },
-    {
-      id: 3,
-      url: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9',
-      alt: 'Dağ Evi Bungalov',
-      caption: 'Dağların Arasında Huzurlu Bungalov'
-    },
-    {
-      id: 4,
-      url: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb',
-      alt: 'Kır Evi Bungalov',
-      caption: 'Doğayla İç İçe Bungalov Deneyimi'
-    },
-    {
-      id: 5,
-      url: 'https://images.unsplash.com/photo-1472396961693-142e6e269027',
-      alt: 'Çiftlik Evi Bungalov',
-      caption: 'Çiftlik Hayatını Deneyimleyin'
-    },
-    {
-      id: 6,
-      url: 'https://images.unsplash.com/photo-1500673922987-e212871fec22',
-      alt: 'Orman Evi Bungalov',
-      caption: 'Ormanın Sesini Dinleyin'
-    },
-  ],
-  nature: [
-    {
-      id: 7,
-      url: 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e',
-      alt: 'Doğa Manzarası - Göl',
-      caption: 'Tesisimiz Yakınındaki Göl Manzarası'
-    },
-    {
-      id: 8,
-      url: 'https://images.unsplash.com/photo-1426604966848-d7adac402bff',
-      alt: 'Doğa Manzarası - Şelale',
-      caption: 'Bungalovlarımızdan 10 Dakika Yürüme Mesafesindeki Şelale'
-    },
-    {
-      id: 9,
-      url: 'https://images.unsplash.com/photo-1501854140801-50d01698950b',
-      alt: 'Doğa Manzarası - Dağ',
-      caption: 'Nefes Kesen Dağ Manzarası'
-    },
-    {
-      id: 10,
-      url: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e',
-      alt: 'Doğa Manzarası - Orman',
-      caption: 'Tesisimizi Çevreleyen Orman'
-    },
-    {
-      id: 11,
-      url: 'https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07',
-      alt: 'Doğa Manzarası - Çayır',
-      caption: 'Yeşilin Her Tonunu Görebileceğiniz Çayırlarımız'
-    },
-    {
-      id: 12,
-      url: 'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d',
-      alt: 'Doğa Manzarası - Ağaçlar',
-      caption: 'Yüzyıllık Ağaçlar Arasında Huzur'
-    }
-  ],
-  activities: [
-    {
-      id: 13,
-      url: 'https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7',
-      alt: 'Kamp Ateşi',
-      caption: 'Akşam Kamp Ateşi Etkinliğimiz'
-    },
-    {
-      id: 14,
-      url: 'https://images.unsplash.com/photo-1445307806294-bff7f67ff225',
-      alt: 'Kano Turu',
-      caption: 'Göl Üzerinde Kano Turu'
-    },
-    {
-      id: 15,
-      url: 'https://images.unsplash.com/photo-1533105079780-92b9be482077',
-      alt: 'Doğa Yürüyüşü',
-      caption: 'Rehberli Doğa Yürüyüşü'
-    },
-    {
-      id: 16,
-      url: 'https://images.unsplash.com/photo-1414016642750-7fdd78dc33d9',
-      alt: 'Dağ Bisikleti',
-      caption: 'Dağ Bisikleti Parkurlarımız'
-    },
-    {
-      id: 17,
-      url: 'https://images.unsplash.com/photo-1510672981848-a1c4f1cb5ccf',
-      alt: 'Yoga Dersleri',
-      caption: 'Açık Havada Yoga Derslerimiz'
-    },
-    {
-      id: 18,
-      url: 'https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07',
-      alt: 'Piknik Alanı',
-      caption: 'Ailece Vakit Geçirebileceğiniz Piknik Alanlarımız'
-    }
-  ]
-};
+// Demo galeri görselleri
+const galleryImages = [
+  {
+    id: 1,
+    title: "Orman Bungalov Dış Görünüm",
+    category: "dış",
+    url: "https://images.unsplash.com/photo-1510598125064-a9d7a4d09059"
+  },
+  {
+    id: 2,
+    title: "Göl Kenarı Bungalov",
+    category: "dış",
+    url: "https://images.unsplash.com/photo-1561963706-5e4d2532dbec"
+  },
+  {
+    id: 3,
+    title: "Lüks İç Tasarım",
+    category: "iç",
+    url: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7"
+  },
+  {
+    id: 4,
+    title: "Modern Yatak Odası",
+    category: "iç",
+    url: "https://images.unsplash.com/photo-1594563703937-c6dc11f5ba82"
+  },
+  {
+    id: 5,
+    title: "Doğa Manzarası",
+    category: "doğa",
+    url: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e"
+  },
+  {
+    id: 6,
+    title: "Kahvaltı Sunumu",
+    category: "yeme-içme",
+    url: "https://images.unsplash.com/photo-1498837167922-ddd27525d352"
+  },
+  {
+    id: 7,
+    title: "Romantik Akşam Yemeği",
+    category: "yeme-içme",
+    url: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0"
+  },
+  {
+    id: 8,
+    title: "Şömine Başında",
+    category: "iç",
+    url: "https://images.unsplash.com/photo-1559599189-fe84dea4eb79"
+  },
+  {
+    id: 9,
+    title: "Bungalov Havuz Başı",
+    category: "dış",
+    url: "https://images.unsplash.com/photo-1563911302283-d2bc129e7570"
+  },
+  {
+    id: 10,
+    title: "Orman Yürüyüşü",
+    category: "aktivite",
+    url: "https://images.unsplash.com/photo-1501554728187-ce583db33af7"
+  },
+  {
+    id: 11,
+    title: "Gün Batımı Teras",
+    category: "dış",
+    url: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4"
+  },
+  {
+    id: 12,
+    title: "Lüks Banyo",
+    category: "iç",
+    url: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a"
+  },
+  {
+    id: 13,
+    title: "Jakuzili Suite",
+    category: "iç",
+    url: "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd"
+  },
+  {
+    id: 14,
+    title: "Yoga Platformu",
+    category: "aktivite",
+    url: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b"
+  },
+  {
+    id: 15,
+    title: "Rustik İç Mekan",
+    category: "iç",
+    url: "https://images.unsplash.com/photo-1518733057094-95b53143d2a7"
+  },
+  {
+    id: 16,
+    title: "Nehir Manzarası",
+    category: "doğa",
+    url: "https://images.unsplash.com/photo-1505765050516-f72dcac9c60e"
+  },
+  {
+    id: 17,
+    title: "Açık Hava Duşu",
+    category: "dış",
+    url: "https://images.unsplash.com/photo-1584622781564-1d987f7333c1"
+  },
+  {
+    id: 18,
+    title: "Gece Manzarası",
+    category: "dış",
+    url: "https://images.unsplash.com/photo-1518946222227-364f22132616"
+  }
+];
 
 const Gallery = () => {
+  const [filter, setFilter] = useState("hepsi");
+  const [open, setOpen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  
+  const filteredImages = filter === "hepsi" 
+    ? galleryImages 
+    : galleryImages.filter(img => img.category === filter);
+  
+  const handleImageClick = (index: number) => {
+    setCurrentImageIndex(index);
+    setOpen(true);
+  };
+  
+  const nextImage = () => {
+    setCurrentImageIndex((prev) => 
+      prev === filteredImages.length - 1 ? 0 : prev + 1
+    );
+  };
+  
+  const prevImage = () => {
+    setCurrentImageIndex((prev) => 
+      prev === 0 ? filteredImages.length - 1 : prev - 1
+    );
+  };
+  
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "ArrowRight") nextImage();
+    if (e.key === "ArrowLeft") prevImage();
+    if (e.key === "Escape") setOpen(false);
+  };
+  
   return (
     <Layout>
-      <div className="container mx-auto px-4 py-16">
-        <h1 className="text-3xl md:text-4xl font-bold mb-6">Galeri</h1>
-        <p className="text-gray-600 mb-8 max-w-3xl">
-          Doğanın kalbinde yer alan tesisimize ait fotoğrafları inceleyebilir, bungalovlarımızın konforunu, doğanın güzelliğini ve etkinliklerimizi görebilirsiniz.
-        </p>
-
-        <Tabs defaultValue="bungalow" className="mb-10">
-          <TabsList className="mb-8 flex flex-wrap gap-2">
-            <TabsTrigger value="bungalow">Bungalovlar</TabsTrigger>
-            <TabsTrigger value="nature">Doğa</TabsTrigger>
-            <TabsTrigger value="activities">Etkinlikler</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="bungalow">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {galleryImages.bungalow.map((image) => (
-                <GalleryItem key={image.id} image={image} />
-              ))}
+      <div className="container mx-auto px-4 py-16" onKeyDown={handleKeyDown} tabIndex={0}>
+        <div className="text-center mb-12">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">Galeri</h1>
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            Bungalovlarımızın içi, dışı, çevresi ve sunduğumuz hizmetlerden görüntüler.
+          </p>
+        </div>
+        
+        {/* Filter Buttons */}
+        <div className="flex flex-wrap justify-center gap-2 mb-8">
+          <Button 
+            variant={filter === "hepsi" ? "default" : "outline"}
+            onClick={() => setFilter("hepsi")}
+            className={filter === "hepsi" ? "bg-nature-500 hover:bg-nature-600" : ""}
+          >
+            Tümü
+          </Button>
+          <Button 
+            variant={filter === "dış" ? "default" : "outline"}
+            onClick={() => setFilter("dış")}
+            className={filter === "dış" ? "bg-nature-500 hover:bg-nature-600" : ""}
+          >
+            Dış Mekan
+          </Button>
+          <Button 
+            variant={filter === "iç" ? "default" : "outline"}
+            onClick={() => setFilter("iç")}
+            className={filter === "iç" ? "bg-nature-500 hover:bg-nature-600" : ""}
+          >
+            İç Mekan
+          </Button>
+          <Button 
+            variant={filter === "doğa" ? "default" : "outline"}
+            onClick={() => setFilter("doğa")}
+            className={filter === "doğa" ? "bg-nature-500 hover:bg-nature-600" : ""}
+          >
+            Doğa
+          </Button>
+          <Button 
+            variant={filter === "yeme-içme" ? "default" : "outline"}
+            onClick={() => setFilter("yeme-içme")}
+            className={filter === "yeme-içme" ? "bg-nature-500 hover:bg-nature-600" : ""}
+          >
+            Yeme & İçme
+          </Button>
+          <Button 
+            variant={filter === "aktivite" ? "default" : "outline"}
+            onClick={() => setFilter("aktivite")}
+            className={filter === "aktivite" ? "bg-nature-500 hover:bg-nature-600" : ""}
+          >
+            Aktiviteler
+          </Button>
+        </div>
+        
+        {/* Gallery Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {filteredImages.map((image, index) => (
+            <div 
+              key={image.id} 
+              className="relative group overflow-hidden rounded-lg cursor-pointer h-64"
+              onClick={() => handleImageClick(index)}
+            >
+              <img 
+                src={image.url} 
+                alt={image.title} 
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-300 flex items-end">
+                <div className="p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                  <h3 className="text-white font-medium text-lg">{image.title}</h3>
+                </div>
+              </div>
             </div>
-          </TabsContent>
+          ))}
           
-          <TabsContent value="nature">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {galleryImages.nature.map((image) => (
-                <GalleryItem key={image.id} image={image} />
-              ))}
+          {filteredImages.length === 0 && (
+            <div className="col-span-full text-center py-16">
+              <p className="text-gray-500">Bu kategoride henüz görsel bulunmamaktadır.</p>
             </div>
-          </TabsContent>
-          
-          <TabsContent value="activities">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {galleryImages.activities.map((image) => (
-                <GalleryItem key={image.id} image={image} />
-              ))}
+          )}
+        </div>
+        
+        {/* Lightbox */}
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogContent className="max-w-5xl bg-black/95 border-0 text-white p-0">
+            <div className="relative w-full h-[80vh]">
+              <button 
+                onClick={() => setOpen(false)}
+                className="absolute right-4 top-4 z-10 p-2 rounded-full bg-black/50 hover:bg-black/70 text-white"
+              >
+                <X className="h-6 w-6" />
+              </button>
+              
+              <div className="w-full h-full flex items-center justify-center">
+                <img 
+                  src={filteredImages[currentImageIndex]?.url} 
+                  alt={filteredImages[currentImageIndex]?.title} 
+                  className="max-h-full max-w-full object-contain"
+                />
+              </div>
+              
+              <div className="absolute bottom-4 left-0 right-0 text-center">
+                <h3 className="text-lg font-medium px-4 py-2 bg-black/70 inline-block rounded-lg">
+                  {filteredImages[currentImageIndex]?.title}
+                </h3>
+              </div>
+              
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  prevImage();
+                }}
+                className="absolute left-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/50 hover:bg-black/70 text-white"
+              >
+                <ChevronLeft className="h-6 w-6" />
+              </button>
+              
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  nextImage();
+                }}
+                className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/50 hover:bg-black/70 text-white"
+              >
+                <ChevronRight className="h-6 w-6" />
+              </button>
+              
+              <div className="absolute bottom-16 left-0 right-0 text-center">
+                <div className="inline-flex gap-1 px-2 py-1 bg-black/70 rounded-lg">
+                  {filteredImages.map((_, index) => (
+                    <button 
+                      key={index}
+                      className={`w-2 h-2 rounded-full ${
+                        index === currentImageIndex ? 'bg-white' : 'bg-white/30'
+                      }`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setCurrentImageIndex(index);
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
             </div>
-          </TabsContent>
-        </Tabs>
+          </DialogContent>
+        </Dialog>
       </div>
     </Layout>
-  );
-};
-
-interface GalleryItemProps {
-  image: {
-    id: number;
-    url: string;
-    alt: string;
-    caption: string;
-  };
-}
-
-const GalleryItem: React.FC<GalleryItemProps> = ({ image }) => {
-  return (
-    <div className="overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 group">
-      <div className="relative aspect-square">
-        <img 
-          src={image.url} 
-          alt={image.alt} 
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
-        />
-        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
-          <div className="p-4 w-full">
-            <p className="text-white text-lg font-medium">{image.caption}</p>
-          </div>
-        </div>
-      </div>
-    </div>
   );
 };
 

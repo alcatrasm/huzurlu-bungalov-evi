@@ -1,128 +1,224 @@
 
 import React from 'react';
-import Layout from '../components/layout/Layout';
-import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import Layout from '@/components/layout/Layout';
+import { Card, CardContent } from '@/components/ui/card';
+import { Heart, Shield, Users, Clock, Star, Award, CheckCircle } from 'lucide-react';
 
 const About = () => {
   return (
     <Layout>
       <div className="container mx-auto px-4 py-16">
-        <h1 className="text-3xl md:text-4xl font-bold mb-6">Hakkımızda</h1>
-        
         {/* Hero Section */}
-        <div className="relative rounded-xl overflow-hidden mb-12">
-          <img 
-            src="https://images.unsplash.com/photo-1472396961693-142e6e269027" 
-            alt="Doğa Bungalovları" 
-            className="w-full h-[300px] md:h-[400px] object-cover"
-          />
-          <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/70 to-transparent p-6">
-            <h2 className="text-white text-2xl md:text-3xl font-semibold">Doğanın Kalbinde Huzurlu Bir Kaçamak</h2>
-          </div>
-        </div>
-
-        {/* Story Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-16">
-          <div>
-            <h3 className="text-2xl font-semibold mb-4 text-nature-600">Hikayemiz</h3>
-            <p className="text-gray-700 mb-4">
-              2010 yılında, doğa tutkunları olan Ali ve Ayşe Yılmaz çifti tarafından kuruldu. Şehir hayatının stresinden uzaklaşmak isteyen misafirlerimize huzurlu bir ortam sunma hayaliyle yola çıktık.
-            </p>
-            <p className="text-gray-700 mb-4">
-              Başlangıçta sadece 3 bungalovla hizmet vermeye başladık. Misafirlerimizden aldığımız olumlu geri dönüşler ve doğaya olan saygımızı koruyan sürdürülebilir yaklaşımımız sayesinde yıllar içinde büyüdük ve bugün 15 farklı bungalovla hizmet veriyoruz.
-            </p>
-            <p className="text-gray-700">
-              Her bungalovumuz, doğayla uyum içinde tasarlanmış, konforlu ve modern olanaklarla donatılmıştır. Misafirlerimize unutulmaz bir tatil deneyimi sunmak için sürekli kendimizi geliştiriyor ve yeniliyoruz.
-            </p>
-          </div>
-          <div>
-            <img 
-              src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" 
-              alt="Doğa Bungalovları" 
-              className="w-full h-full object-cover rounded-lg shadow-lg"
-            />
-          </div>
-        </div>
-
-        {/* Values Section */}
-        <div className="mb-16">
-          <h3 className="text-2xl font-semibold mb-6 text-nature-600 text-center">Değerlerimiz</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            <div className="bg-nature-50 p-6 rounded-lg shadow-sm">
-              <div className="w-12 h-12 bg-nature-100 rounded-full flex items-center justify-center mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-nature-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11" />
-                </svg>
-              </div>
-              <h4 className="text-xl font-medium mb-2">Doğaya Saygı</h4>
-              <p className="text-gray-600">Tüm faaliyetlerimizde çevreyi korumayı ve doğal yaşama saygı göstermeyi temel prensip edindik.</p>
-            </div>
-            <div className="bg-nature-50 p-6 rounded-lg shadow-sm">
-              <div className="w-12 h-12 bg-nature-100 rounded-full flex items-center justify-center mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-nature-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
-                </svg>
-              </div>
-              <h4 className="text-xl font-medium mb-2">Misafirperverlik</h4>
-              <p className="text-gray-600">Misafirlerimizi ailemizin bir parçası olarak görüyor, onların konforu ve memnuniyeti için çalışıyoruz.</p>
-            </div>
-            <div className="bg-nature-50 p-6 rounded-lg shadow-sm">
-              <div className="w-12 h-12 bg-nature-100 rounded-full flex items-center justify-center mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-nature-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
-              </div>
-              <h4 className="text-xl font-medium mb-2">Sürdürülebilirlik</h4>
-              <p className="text-gray-600">Geri dönüşüm, yenilenebilir enerji kullanımı ve su tasarrufu gibi sürdürülebilir uygulamaları destekliyoruz.</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Team Section */}
-        <div className="mb-16">
-          <h3 className="text-2xl font-semibold mb-6 text-nature-600 text-center">Ekibimiz</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="mb-4 overflow-hidden rounded-full mx-auto w-32 h-32">
-                <img src="https://i.pravatar.cc/150?img=12" alt="Ali Yılmaz" className="w-full h-full object-cover" />
-              </div>
-              <h4 className="text-lg font-medium">Ali Yılmaz</h4>
-              <p className="text-gray-600">Kurucu & Yönetici</p>
-            </div>
-            <div className="text-center">
-              <div className="mb-4 overflow-hidden rounded-full mx-auto w-32 h-32">
-                <img src="https://i.pravatar.cc/150?img=25" alt="Ayşe Yılmaz" className="w-full h-full object-cover" />
-              </div>
-              <h4 className="text-lg font-medium">Ayşe Yılmaz</h4>
-              <p className="text-gray-600">Kurucu & Operasyon Müdürü</p>
-            </div>
-            <div className="text-center">
-              <div className="mb-4 overflow-hidden rounded-full mx-auto w-32 h-32">
-                <img src="https://i.pravatar.cc/150?img=32" alt="Mehmet Kaya" className="w-full h-full object-cover" />
-              </div>
-              <h4 className="text-lg font-medium">Mehmet Kaya</h4>
-              <p className="text-gray-600">Şef</p>
-            </div>
-            <div className="text-center">
-              <div className="mb-4 overflow-hidden rounded-full mx-auto w-32 h-32">
-                <img src="https://i.pravatar.cc/150?img=45" alt="Zeynep Demir" className="w-full h-full object-cover" />
-              </div>
-              <h4 className="text-lg font-medium">Zeynep Demir</h4>
-              <p className="text-gray-600">Etkinlik Koordinatörü</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Call to Action */}
-        <div className="bg-nature-100 rounded-xl p-8 text-center">
-          <h3 className="text-2xl font-semibold mb-4">Doğanın kalbinde huzurlu bir tatil sizi bekliyor</h3>
-          <p className="text-gray-700 mb-6 max-w-2xl mx-auto">
-            Şehir hayatının stresinden uzaklaşmak ve doğayla iç içe bir tatil yapmak için sizleri bungalovlarımıza bekliyoruz.
+        <div className="text-center mb-16">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">Hakkımızda</h1>
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            Doğanın kalbinde huzurlu bir kaçamak arayanlar için tasarlanmış, benzersiz bungalov deneyimi sunuyoruz.
           </p>
-          <Button asChild size="lg" className="bg-nature-600 hover:bg-nature-700">
-            <Link to="/bungalovlar">Bungalovları Keşfedin</Link>
-          </Button>
+        </div>
+        
+        {/* Story Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-24">
+          <div className="order-2 md:order-1">
+            <h2 className="text-3xl font-bold mb-6">Hikayemiz</h2>
+            <p className="text-gray-600 mb-4">
+              Huzurlu Bungalov, 2015 yılında doğaya olan tutkumuzu ve misafirperverliğimizi birleştirmek amacıyla kuruldu. Şehir hayatının karmaşasından uzakta, doğanın sakinliğinde konforlu bir konaklama deneyimi sunma hayalimizle yola çıktık.
+            </p>
+            <p className="text-gray-600 mb-4">
+              Başlangıçta sadece 5 bungalovla hizmet vermeye başladık ve yıllar içinde hem kapasitemizi hem de hizmet kalitemizi artırdık. Bugün, her biri özenle tasarlanmış 15 bungalovla misafirlerimize unutulmaz deneyimler yaşatmaya devam ediyoruz.
+            </p>
+            <p className="text-gray-600">
+              Misyonumuz, misafirlerimizin doğayla iç içe olurken modern konforu da yaşayabilecekleri, kendilerini evlerinde hissedecekleri bir ortam sunmaktır. Vizyonumuz ise, Türkiye'nin en kaliteli ve doğa dostu bungalov işletmesi olmaktır.
+            </p>
+          </div>
+          <div className="order-1 md:order-2 relative">
+            <img 
+              src="https://images.unsplash.com/photo-1510798831971-661eb04b3739" 
+              alt="Huzurlu Bungalov'un hikayesi" 
+              className="rounded-lg shadow-lg w-full h-[400px] object-cover"
+            />
+            <div className="absolute -bottom-6 -right-6 bg-white shadow-lg rounded-lg p-4 hidden md:block">
+              <p className="text-lg font-semibold">2015'ten beri</p>
+              <p className="text-sm text-gray-600">10 yıllık deneyim</p>
+            </div>
+          </div>
+        </div>
+        
+        {/* Values Section */}
+        <div className="mb-24">
+          <h2 className="text-3xl font-bold text-center mb-12">Değerlerimiz</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <Card>
+              <CardContent className="p-6 text-center">
+                <div className="mx-auto w-12 h-12 flex items-center justify-center rounded-full bg-nature-100 text-nature-600 mb-4">
+                  <Heart />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">Misafir Memnuniyeti</h3>
+                <p className="text-gray-600">
+                  Misafirlerimize kendilerini özel hissettirmek için elimizden gelenin en iyisini yapıyoruz. Onların konforu ve mutluluğu her zaman önceliğimizdir.
+                </p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="p-6 text-center">
+                <div className="mx-auto w-12 h-12 flex items-center justify-center rounded-full bg-nature-100 text-nature-600 mb-4">
+                  <Shield />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">Sürdürülebilirlik</h3>
+                <p className="text-gray-600">
+                  Doğaya saygılı, çevre dostu uygulamaları benimsiyor, karbon ayak izimizi azaltmak için sürekli çalışıyoruz. Güneş enerjisi kullanımı önceliklerimiz arasında.
+                </p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="p-6 text-center">
+                <div className="mx-auto w-12 h-12 flex items-center justify-center rounded-full bg-nature-100 text-nature-600 mb-4">
+                  <Users />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">Toplum Katkısı</h3>
+                <p className="text-gray-600">
+                  Yerel halkla işbirliği yaparak bölge ekonomisine katkıda bulunuyor, kültürel değerleri yaşatmaya özen gösteriyoruz.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+        
+        {/* Team Section */}
+        <div className="mb-24">
+          <h2 className="text-3xl font-bold text-center mb-12">Ekibimiz</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[
+              {
+                name: "Ahmet Yılmaz",
+                role: "Kurucu & CEO",
+                image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e"
+              },
+              {
+                name: "Zeynep Aydın",
+                role: "Operasyon Müdürü",
+                image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330"
+              },
+              {
+                name: "Mehmet Demir",
+                role: "Şef",
+                image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d"
+              },
+              {
+                name: "Ayşe Kaya",
+                role: "Misafir İlişkileri",
+                image: "https://images.unsplash.com/photo-1580489944761-15a19d654956"
+              }
+            ].map((member, index) => (
+              <div key={index} className="text-center">
+                <div className="relative mb-4 mx-auto w-40 h-40 overflow-hidden rounded-full">
+                  <img 
+                    src={member.image} 
+                    alt={member.name} 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <h3 className="text-xl font-semibold">{member.name}</h3>
+                <p className="text-gray-600">{member.role}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        {/* Achievements Section */}
+        <div className="mb-24 bg-gray-50 rounded-lg p-8">
+          <h2 className="text-3xl font-bold text-center mb-12">Başarılarımız ve Ödüllerimiz</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="flex items-start gap-4">
+              <div className="shrink-0 mt-1">
+                <Star className="h-8 w-8 text-amber-400" />
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold mb-2">2023 - En İyi Ekolojik Konaklama Tesisi</h3>
+                <p className="text-gray-600">
+                  Sürdürülebilir turizm uygulamalarımız ve ekolojik yaklaşımımızla Turizm Bakanlığı tarafından ödüle layık görüldük.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-start gap-4">
+              <div className="shrink-0 mt-1">
+                <Award className="h-8 w-8 text-amber-400" />
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold mb-2">2022 - Misafir Memnuniyeti Ödülü</h3>
+                <p className="text-gray-600">
+                  Booking.com platformunda 9.8/10 puan alarak bölgemizdeki en yüksek misafir memnuniyetine sahip tesis seçildik.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-start gap-4">
+              <div className="shrink-0 mt-1">
+                <CheckCircle className="h-8 w-8 text-amber-400" />
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold mb-2">2020 - "Green Key" Sertifikası</h3>
+                <p className="text-gray-600">
+                  Çevre dostu uygulamalarımızla uluslararası "Green Key" (Yeşil Anahtar) sertifikasını almaya hak kazandık.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-start gap-4">
+              <div className="shrink-0 mt-1">
+                <Clock className="h-8 w-8 text-amber-400" />
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold mb-2">2018 - 1000+ Mutlu Misafir</h3>
+                <p className="text-gray-600">
+                  Açılışımızdan sadece 3 yıl sonra, 1000'den fazla misafire hizmet verme başarısını gösterdik.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Stats Section */}
+        <div className="mb-24">
+          <h2 className="text-3xl font-bold text-center mb-12">Rakamlarla Biz</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+            <div className="bg-nature-50 rounded-lg p-6">
+              <p className="text-4xl font-bold text-nature-600">15</p>
+              <p className="text-gray-600 mt-2">Bungalov</p>
+            </div>
+            <div className="bg-nature-50 rounded-lg p-6">
+              <p className="text-4xl font-bold text-nature-600">10+</p>
+              <p className="text-gray-600 mt-2">Yıllık Deneyim</p>
+            </div>
+            <div className="bg-nature-50 rounded-lg p-6">
+              <p className="text-4xl font-bold text-nature-600">5000+</p>
+              <p className="text-gray-600 mt-2">Misafir</p>
+            </div>
+            <div className="bg-nature-50 rounded-lg p-6">
+              <p className="text-4xl font-bold text-nature-600">4.9/5</p>
+              <p className="text-gray-600 mt-2">Misafir Puanı</p>
+            </div>
+          </div>
+        </div>
+        
+        {/* CTA Section */}
+        <div className="rounded-lg overflow-hidden relative">
+          <img 
+            src="https://images.unsplash.com/photo-1571896349842-33c89424de2d" 
+            alt="Huzurlu Bungalov" 
+            className="w-full h-80 object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+            <div className="text-center text-white p-8">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Siz de Huzurlu Bir Tatil İster misiniz?</h2>
+              <p className="text-lg mb-6">
+                Doğanın kalbinde, konforlu ve huzurlu bir tatil için hemen rezervasyon yapın.
+              </p>
+              <a 
+                href="/bungalovlar" 
+                className="inline-block bg-white text-nature-600 px-6 py-3 rounded-full font-medium hover:bg-nature-50 transition-colors"
+              >
+                Bungalovları Keşfet
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </Layout>
