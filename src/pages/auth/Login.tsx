@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -6,8 +5,7 @@ import Layout from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Facebook, Loader2 } from 'lucide-react';
-import { FcGoogle } from 'react-icons/fc';
+import { Facebook, Loader2, Chrome } from 'lucide-react';
 
 const Login = () => {
   const { user, signIn, signInWithGoogle, signInWithFacebook } = useAuth();
@@ -87,7 +85,7 @@ const Login = () => {
                 onClick={() => signInWithGoogle()}
                 className="w-full"
               >
-                <FcGoogle className="mr-2 h-5 w-5" />
+                <Chrome className="mr-2 h-5 w-5" />
                 Google ile Giriş Yap
               </Button>
               <Button 

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -7,8 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Facebook, Loader2 } from 'lucide-react';
-import { FcGoogle } from 'react-icons/fc';
+import { Facebook, Loader2, Chrome } from 'lucide-react';
 
 const Register = () => {
   const { user, signUp, signInWithGoogle, signInWithFacebook } = useAuth();
@@ -128,7 +126,7 @@ const Register = () => {
                 onClick={() => signInWithGoogle()}
                 className="w-full"
               >
-                <FcGoogle className="mr-2 h-5 w-5" />
+                <Chrome className="mr-2 h-5 w-5" />
                 Google ile Kayıt Ol
               </Button>
               <Button 
