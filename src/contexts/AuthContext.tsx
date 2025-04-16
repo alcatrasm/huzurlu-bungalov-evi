@@ -1,4 +1,3 @@
-
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Session, User } from '@supabase/supabase-js';
@@ -26,33 +25,42 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isAdmin, setIsAdmin] = useState(false);
   const { toast } = useToast();
 
+  const checkAdminStatus = async (userId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('user_roles')
+        .select('*')
+        .eq('user_id', userId)
+        .single();
+        
+      if (data && data.role === 'admin') {
+        setIsAdmin(true);
+        console.log("Admin role detected for user", userId);
+      } else {
+        setIsAdmin(false);
+        console.log("Admin role not found for user", userId, "Data:", data);
+      }
+      
+      if (error) {
+        console.error('Error fetching user role:', error);
+        setIsAdmin(false);
+      }
+    } catch (error) {
+      console.error('Exception checking admin status:', error);
+      setIsAdmin(false);
+    }
+  };
+
   useEffect(() => {
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
+      async (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
         
         // Check if user is admin
         if (session?.user) {
-          setTimeout(async () => {
-            try {
-              const { data, error } = await supabase
-                .from('user_roles')
-                .select('*')
-                .eq('user_id', session.user.id)
-                .single();
-                
-              if (data && data.role === 'admin') {
-                setIsAdmin(true);
-              } else {
-                setIsAdmin(false);
-              }
-            } catch (error) {
-              console.error('Error checking admin status:', error);
-              setIsAdmin(false);
-            }
-          }, 0);
+          await checkAdminStatus(session.user.id);
         } else {
           setIsAdmin(false);
         }
@@ -63,24 +71,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
-      setLoading(false);
       
       // Check if user is admin
       if (session?.user) {
-        supabase
-          .from('user_roles')
-          .select('*')
-          .eq('user_id', session.user.id)
-          .single()
-          .then(({ data, error }) => {
-            if (!error && data && data.role === 'admin') {
-              setIsAdmin(true);
-            }
-          })
-          .then(undefined, (error) => {  // Using .then(undefined, errorHandler) instead of .catch()
-            console.error('Error checking admin status:', error);
-          });
+        checkAdminStatus(session.user.id);
       }
+      
+      setLoading(false);
     });
 
     return () => subscription.unsubscribe();
