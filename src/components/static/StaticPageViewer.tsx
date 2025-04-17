@@ -24,16 +24,21 @@ const StaticPageViewer = ({ defaultSlug }: StaticPageViewerProps) => {
       if (!slug) return;
       
       try {
+        console.log('Fetching page with slug:', slug);
         const { data, error } = await supabase
           .from('static_pages')
           .select('*')
           .eq('slug', slug)
           .maybeSingle();
           
-        if (error) throw error;
+        if (error) {
+          console.error('Error fetching page:', error);
+          throw error;
+        }
         
         if (data) {
-          setPage(data as StaticPage);
+          console.log('Page data:', data);
+          setPage(data as unknown as StaticPage);
           
           // Update page meta data
           if (data.meta_title) {
@@ -94,6 +99,7 @@ const StaticPageViewer = ({ defaultSlug }: StaticPageViewerProps) => {
   return (
     <div className="container mx-auto px-4 py-12">
       <div className="max-w-3xl mx-auto">
+        <h1 className="text-3xl font-bold mb-6">{page.title}</h1>
         <div 
           className="prose prose-lg max-w-none prose-headings:text-nature-800 prose-a:text-earth-600"
           dangerouslySetInnerHTML={{ __html: page.content }}

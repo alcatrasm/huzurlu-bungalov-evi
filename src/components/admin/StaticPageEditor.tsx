@@ -29,18 +29,23 @@ const StaticPageEditor = () => {
       if (!slug) return;
       
       try {
+        console.log('Fetching page with slug:', slug);
         const { data, error } = await supabase
           .from('static_pages')
           .select('*')
           .eq('slug', slug)
           .maybeSingle();
           
-        if (error) throw error;
+        if (error) {
+          console.error('Error fetching page:', error);
+          throw error;
+        }
         
         if (data) {
-          setPage(data as StaticPage);
-          setTitle(data.title);
-          setContent(data.content);
+          console.log('Page data:', data);
+          setPage(data as unknown as StaticPage);
+          setTitle(data.title || '');
+          setContent(data.content || '');
           setMetaTitle(data.meta_title || '');
           setMetaDescription(data.meta_description || '');
         } else {
@@ -72,6 +77,7 @@ const StaticPageEditor = () => {
     setSaving(true);
     
     try {
+      console.log('Updating page:', page.id);
       const { error } = await supabase
         .from('static_pages')
         .update({
@@ -83,7 +89,10 @@ const StaticPageEditor = () => {
         })
         .eq('id', page.id);
         
-      if (error) throw error;
+      if (error) {
+        console.error('Error saving page:', error);
+        throw error;
+      }
       
       toast({
         title: "Sayfa güncellendi",

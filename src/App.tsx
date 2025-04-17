@@ -57,6 +57,7 @@ const App = () => (
             <Route path="/yonetim/rezervasyonlar" element={<AdminRoute><AdminReservations /></AdminRoute>} />
             <Route path="/yonetim/kullanicilar" element={<AdminRoute><AdminUsers /></AdminRoute>} />
             <Route path="/yonetim/sayfalar" element={<AdminRoute><StaticPages /></AdminRoute>} />
+            <Route path="/yonetim/sayfalar/yeni" element={<AdminRoute><StaticPageEdit /></AdminRoute>} />
             <Route path="/yonetim/sayfalar/duzenle/:slug" element={<AdminRoute><StaticPageEdit /></AdminRoute>} />
             
             <Route path="*" element={<NotFound />} />

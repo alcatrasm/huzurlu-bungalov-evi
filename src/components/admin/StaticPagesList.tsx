@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Loader2, Edit, Plus } from 'lucide-react';
 import { StaticPage } from '@/models/StaticPage';
 
-const StaticPagesList = () => {
+export const StaticPagesList = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   
@@ -18,14 +18,19 @@ const StaticPagesList = () => {
   useEffect(() => {
     const fetchPages = async () => {
       try {
+        console.log('Fetching static pages');
         const { data, error } = await supabase
           .from('static_pages')
           .select('*')
           .order('title');
           
-        if (error) throw error;
+        if (error) {
+          console.error('Error fetching pages:', error);
+          throw error;
+        }
         
-        setPages(data as StaticPage[]);
+        console.log('Pages data:', data);
+        setPages(data as unknown as StaticPage[]);
       } catch (error) {
         console.error('Error fetching pages:', error);
         toast({
