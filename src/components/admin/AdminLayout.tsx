@@ -13,7 +13,8 @@ import {
   Users, 
   CalendarRange,
   Settings,
-  BedDouble
+  BedDouble,
+  FileText
 } from 'lucide-react';
 
 interface AdminLayoutProps {
@@ -74,6 +75,13 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                     icon={<Users size={20} />} 
                     label="Kullanıcılar" 
                     active={location.pathname.includes('/yonetim/kullanicilar')} 
+                    onClick={() => setOpen(false)}
+                  />
+                  <SidebarLink 
+                    to="/yonetim/sayfalar" 
+                    icon={<FileText size={20} />} 
+                    label="Sayfalar" 
+                    active={location.pathname.includes('/yonetim/sayfalar')} 
                     onClick={() => setOpen(false)}
                   />
                   <SidebarLink 
@@ -159,6 +167,12 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
             icon={<Users size={20} />} 
             label="Kullanıcılar" 
             active={location.pathname.includes('/yonetim/kullanicilar')} 
+          />
+          <SidebarLink 
+            to="/yonetim/sayfalar" 
+            icon={<FileText size={20} />} 
+            label="Sayfalar" 
+            active={location.pathname.includes('/yonetim/sayfalar')} 
           />
           <SidebarLink 
             to="/yonetim/istatistikler" 

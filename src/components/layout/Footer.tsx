@@ -51,6 +51,9 @@ const Footer = () => {
               <li>
                 <Link to="/iletisim" className="text-gray-300 hover:text-earth-300 transition-colors">İletişim</Link>
               </li>
+              <li>
+                <Link to="/sayfa/sikca-sorulan-sorular" className="text-gray-300 hover:text-earth-300 transition-colors">Sıkça Sorulan Sorular</Link>
+              </li>
             </ul>
           </div>
 
@@ -77,12 +80,22 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Newsletter */}
+          {/* Yasal Bilgiler */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Bülten</h3>
-            <p className="text-sm text-gray-300 mb-4">
-              Kampanyalardan ve yeniliklerden haberdar olmak için bültenimize abone olun.
-            </p>
+            <h3 className="text-lg font-semibold mb-4">Yasal Bilgiler</h3>
+            <ul className="space-y-2">
+              <li>
+                <Link to="/sayfa/gizlilik-politikasi" className="text-gray-300 hover:text-earth-300 transition-colors">Gizlilik Politikası</Link>
+              </li>
+              <li>
+                <Link to="/sayfa/kullanim-kosullari" className="text-gray-300 hover:text-earth-300 transition-colors">Kullanım Koşulları</Link>
+              </li>
+              <li>
+                <a href="#" className="text-gray-300 hover:text-earth-300 transition-colors">Çerez Politikası</a>
+              </li>
+            </ul>
+            
+            <h3 className="text-lg font-semibold mb-4 mt-6">Bülten</h3>
             <form className="flex">
               <input
                 type="email"

@@ -20,8 +20,11 @@ import Dashboard from "./pages/admin/Dashboard";
 import AdminBungalows from "./pages/admin/Bungalows";
 import AdminReservations from "./pages/admin/Reservations";
 import AdminUsers from "./pages/admin/Users";
+import StaticPages from "./pages/admin/StaticPages";
+import StaticPageEdit from "./pages/admin/StaticPageEdit";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import AdminRoute from "./components/auth/AdminRoute";
+import StaticPage from "./pages/StaticPage";
 
 const queryClient = new QueryClient();
 
@@ -38,6 +41,7 @@ const App = () => (
             <Route path="/galeri" element={<Gallery />} />
             <Route path="/iletisim" element={<Contact />} />
             <Route path="/rezervasyon" element={<Reservation />} />
+            <Route path="/sayfa/:slug" element={<StaticPage />} />
             
             {/* Auth Routes */}
             <Route path="/giris" element={<Login />} />
@@ -52,6 +56,8 @@ const App = () => (
             <Route path="/yonetim/bungalovlar" element={<AdminRoute><AdminBungalows /></AdminRoute>} />
             <Route path="/yonetim/rezervasyonlar" element={<AdminRoute><AdminReservations /></AdminRoute>} />
             <Route path="/yonetim/kullanicilar" element={<AdminRoute><AdminUsers /></AdminRoute>} />
+            <Route path="/yonetim/sayfalar" element={<AdminRoute><StaticPages /></AdminRoute>} />
+            <Route path="/yonetim/sayfalar/duzenle/:slug" element={<AdminRoute><StaticPageEdit /></AdminRoute>} />
             
             <Route path="*" element={<NotFound />} />
           </Routes>
