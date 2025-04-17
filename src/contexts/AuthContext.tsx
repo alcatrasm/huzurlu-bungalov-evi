@@ -1,3 +1,4 @@
+
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Session, User } from '@supabase/supabase-js';
@@ -14,6 +15,7 @@ type AuthContextType = {
   signInWithFacebook: () => Promise<void>;
   signOut: () => Promise<void>;
   isAdmin: boolean;
+  checkAdminStatus: (userId: string) => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -26,23 +28,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const { toast } = useToast();
 
   const checkAdminStatus = async (userId: string) => {
+    if (!userId) {
+      setIsAdmin(false);
+      return;
+    }
+    
     try {
+      console.log("Checking admin status for user ID:", userId);
+      
       const { data, error } = await supabase
         .from('user_roles')
         .select('*')
         .eq('user_id', userId)
-        .single();
+        .eq('role', 'admin')
+        .maybeSingle();
         
-      if (data && data.role === 'admin') {
-        setIsAdmin(true);
-        console.log("Admin role detected for user", userId);
-      } else {
-        setIsAdmin(false);
-        console.log("Admin role not found for user", userId, "Data:", data);
-      }
-      
       if (error) {
         console.error('Error fetching user role:', error);
+        setIsAdmin(false);
+        return;
+      }
+      
+      if (data) {
+        console.log("Admin role confirmed for user", userId);
+        setIsAdmin(true);
+      } else {
+        console.log("User is not admin:", userId);
         setIsAdmin(false);
       }
     } catch (error) {
@@ -55,6 +66,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        console.log("Auth state changed:", event, session?.user?.id);
         setSession(session);
         setUser(session?.user ?? null);
         
@@ -69,6 +81,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     // THEN check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
+      console.log("Initial session check:", session?.user?.id);
       setSession(session);
       setUser(session?.user ?? null);
       
@@ -157,7 +170,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       signInWithGoogle,
       signInWithFacebook,
       signOut,
-      isAdmin
+      isAdmin,
+      checkAdminStatus
     }}>
       {children}
     </AuthContext.Provider>
