@@ -43,6 +43,8 @@ const StaticPageViewer = ({ defaultSlug }: StaticPageViewerProps) => {
           // Update page meta data
           if (data.meta_title) {
             document.title = data.meta_title;
+          } else if (data.title) {
+            document.title = `${data.title} | Huzurlu Bungalov`;
           }
           
           if (data.meta_description) {
@@ -81,6 +83,12 @@ const StaticPageViewer = ({ defaultSlug }: StaticPageViewerProps) => {
     // Cleanup function to reset page title
     return () => {
       document.title = 'Huzurlu Bungalov - Doğayla İç İçe Tatil Deneyimi';
+      
+      // Clean up meta description
+      const metaDescription = document.querySelector('meta[name="description"]');
+      if (metaDescription) {
+        metaDescription.setAttribute('content', 'Doğayla iç içe huzurlu bir tatil deneyimi için bungalov ve konaklama seçenekleri.');
+      }
     };
   }, [slug, navigate, toast]);
   

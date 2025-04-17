@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Facebook, Instagram, Twitter, MapPin, Phone, Mail } from 'lucide-react';
+import { Facebook, Instagram, Twitter, MapPin, Phone, Mail, Linkedin } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -17,17 +17,17 @@ const Footer = () => {
               Doğa ile iç içe, huzur dolu bir tatil deneyimi yaşamak için sizleri bungalovlarımıza bekliyoruz.
             </p>
             <div className="flex space-x-4 mt-6">
-              <a href="#" className="text-white hover:text-earth-300 transition-colors">
+              <a href="#" aria-label="Facebook" className="text-white hover:text-earth-300 transition-colors">
                 <Facebook size={20} />
-                <span className="sr-only">Facebook</span>
               </a>
-              <a href="#" className="text-white hover:text-earth-300 transition-colors">
+              <a href="#" aria-label="Instagram" className="text-white hover:text-earth-300 transition-colors">
                 <Instagram size={20} />
-                <span className="sr-only">Instagram</span>
               </a>
-              <a href="#" className="text-white hover:text-earth-300 transition-colors">
+              <a href="#" aria-label="Twitter" className="text-white hover:text-earth-300 transition-colors">
                 <Twitter size={20} />
-                <span className="sr-only">Twitter</span>
+              </a>
+              <a href="#" aria-label="LinkedIn" className="text-white hover:text-earth-300 transition-colors">
+                <Linkedin size={20} />
               </a>
             </div>
           </div>
@@ -53,6 +53,9 @@ const Footer = () => {
               </li>
               <li>
                 <Link to="/sayfa/sikca-sorulan-sorular" className="text-gray-300 hover:text-earth-300 transition-colors">Sıkça Sorulan Sorular</Link>
+              </li>
+              <li>
+                <Link to="/blog" className="text-gray-300 hover:text-earth-300 transition-colors">Blog</Link>
               </li>
             </ul>
           </div>
@@ -91,7 +94,10 @@ const Footer = () => {
                 <Link to="/sayfa/kullanim-kosullari" className="text-gray-300 hover:text-earth-300 transition-colors">Kullanım Koşulları</Link>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-earth-300 transition-colors">Çerez Politikası</a>
+                <Link to="/sayfa/kvkk" className="text-gray-300 hover:text-earth-300 transition-colors">KVKK Aydınlatma Metni</Link>
+              </li>
+              <li>
+                <Link to="/sayfa/cerez-politikasi" className="text-gray-300 hover:text-earth-300 transition-colors">Çerez Politikası</Link>
               </li>
             </ul>
             
@@ -102,10 +108,12 @@ const Footer = () => {
                 placeholder="E-posta adresiniz"
                 className="px-3 py-2 bg-nature-700 text-white placeholder-gray-400 rounded-l-md focus:outline-none focus:ring-2 focus:ring-earth-300 w-full"
                 required
+                aria-label="Email for newsletter"
               />
               <button
                 type="submit"
                 className="px-3 py-2 bg-earth-500 hover:bg-earth-600 text-white rounded-r-md transition-colors"
+                aria-label="Subscribe to newsletter"
               >
                 Abone Ol
               </button>

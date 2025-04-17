@@ -14,7 +14,13 @@ import {
   CalendarRange,
   Settings,
   BedDouble,
-  FileText
+  FileText,
+  MessageSquare,
+  Star,
+  Bell,
+  CreditCard,
+  ShieldCheck,
+  Newspaper,
 } from 'lucide-react';
 
 interface AdminLayoutProps {
@@ -48,7 +54,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                   </Link>
                 </div>
                 
-                <nav className="px-2 py-4">
+                <nav className="px-2 py-4 overflow-y-auto max-h-[calc(100vh-80px)]">
                   <SidebarLink 
                     to="/yonetim" 
                     icon={<LayoutDashboard size={20} />} 
@@ -85,10 +91,52 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                     onClick={() => setOpen(false)}
                   />
                   <SidebarLink 
+                    to="/yonetim/blog" 
+                    icon={<Newspaper size={20} />} 
+                    label="Blog Yönetimi" 
+                    active={location.pathname.includes('/yonetim/blog')} 
+                    onClick={() => setOpen(false)}
+                  />
+                  <SidebarLink 
+                    to="/yonetim/yorumlar" 
+                    icon={<Star size={20} />} 
+                    label="Yorumlar" 
+                    active={location.pathname.includes('/yonetim/yorumlar')} 
+                    onClick={() => setOpen(false)}
+                  />
+                  <SidebarLink 
+                    to="/yonetim/mesajlar" 
+                    icon={<MessageSquare size={20} />} 
+                    label="Mesajlar" 
+                    active={location.pathname.includes('/yonetim/mesajlar')} 
+                    onClick={() => setOpen(false)}
+                  />
+                  <SidebarLink 
+                    to="/yonetim/odemeler" 
+                    icon={<CreditCard size={20} />} 
+                    label="Ödemeler" 
+                    active={location.pathname.includes('/yonetim/odemeler')} 
+                    onClick={() => setOpen(false)}
+                  />
+                  <SidebarLink 
+                    to="/yonetim/duyurular" 
+                    icon={<Bell size={20} />} 
+                    label="Duyurular" 
+                    active={location.pathname.includes('/yonetim/duyurular')} 
+                    onClick={() => setOpen(false)}
+                  />
+                  <SidebarLink 
                     to="/yonetim/istatistikler" 
                     icon={<BarChart3 size={20} />} 
                     label="İstatistikler" 
                     active={location.pathname.includes('/yonetim/istatistikler')} 
+                    onClick={() => setOpen(false)}
+                  />
+                  <SidebarLink 
+                    to="/yonetim/yetki-yonetimi" 
+                    icon={<ShieldCheck size={20} />} 
+                    label="Yetki Yönetimi" 
+                    active={location.pathname.includes('/yonetim/yetki-yonetimi')} 
                     onClick={() => setOpen(false)}
                   />
                   <SidebarLink 
@@ -142,7 +190,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
       </header>
       
       {/* Sidebar for desktop */}
-      <aside className="hidden md:flex flex-col w-64 border-r border-gray-200 bg-white fixed left-0 top-16 bottom-0 z-20">
+      <aside className="hidden md:flex flex-col w-64 border-r border-gray-200 bg-white fixed left-0 top-16 bottom-0 z-20 overflow-y-auto">
         <nav className="flex-1 px-4 py-6 space-y-1">
           <SidebarLink 
             to="/yonetim" 
@@ -175,10 +223,46 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
             active={location.pathname.includes('/yonetim/sayfalar')} 
           />
           <SidebarLink 
+            to="/yonetim/blog" 
+            icon={<Newspaper size={20} />} 
+            label="Blog Yönetimi" 
+            active={location.pathname.includes('/yonetim/blog')} 
+          />
+          <SidebarLink 
+            to="/yonetim/yorumlar" 
+            icon={<Star size={20} />} 
+            label="Yorumlar" 
+            active={location.pathname.includes('/yonetim/yorumlar')} 
+          />
+          <SidebarLink 
+            to="/yonetim/mesajlar" 
+            icon={<MessageSquare size={20} />} 
+            label="Mesajlar" 
+            active={location.pathname.includes('/yonetim/mesajlar')} 
+          />
+          <SidebarLink 
+            to="/yonetim/odemeler" 
+            icon={<CreditCard size={20} />} 
+            label="Ödemeler" 
+            active={location.pathname.includes('/yonetim/odemeler')} 
+          />
+          <SidebarLink 
+            to="/yonetim/duyurular" 
+            icon={<Bell size={20} />} 
+            label="Duyurular" 
+            active={location.pathname.includes('/yonetim/duyurular')} 
+          />
+          <SidebarLink 
             to="/yonetim/istatistikler" 
             icon={<BarChart3 size={20} />} 
             label="İstatistikler" 
             active={location.pathname.includes('/yonetim/istatistikler')} 
+          />
+          <SidebarLink 
+            to="/yonetim/yetki-yonetimi" 
+            icon={<ShieldCheck size={20} />} 
+            label="Yetki Yönetimi" 
+            active={location.pathname.includes('/yonetim/yetki-yonetimi')} 
           />
           <SidebarLink 
             to="/yonetim/ayarlar" 
