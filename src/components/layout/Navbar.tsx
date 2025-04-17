@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, User, LogOut, MessageSquare, Calendar, HelpCircle, Info, Image, Home, Building } from 'lucide-react';
+import { Menu, X, User, LogOut, MessageSquare, Calendar, HelpCircle, Info, Image, Home, Building, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import {
@@ -71,18 +71,21 @@ const Navbar = () => {
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
+              <DropdownMenuContent align="end" className="w-56">
                 <DropdownMenuItem asChild>
-                  <Link to="/profil">Profilim</Link>
+                  <Link to="/profil" className="flex items-center">
+                    <User size={16} className="mr-2" />
+                    Profilim
+                  </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to="/profil/rezervasyonlarim">
+                  <Link to="/profil/rezervasyonlarim" className="flex items-center">
                     <Calendar size={16} className="mr-2" /> 
                     Rezervasyonlarım
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to="/profil/mesajlarim">
+                  <Link to="/profil/mesajlarim" className="flex items-center">
                     <MessageSquare size={16} className="mr-2" /> 
                     Mesajlarım
                   </Link>
@@ -91,7 +94,10 @@ const Navbar = () => {
                   <>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
-                      <Link to="/yonetim">Yönetim Paneli</Link>
+                      <Link to="/yonetim" className="flex items-center">
+                        <Settings size={16} className="mr-2" />
+                        Yönetim Paneli
+                      </Link>
                     </DropdownMenuItem>
                   </>
                 )}
@@ -180,6 +186,7 @@ const Navbar = () => {
                 </MobileNavLink>
                 {isAdmin && (
                   <MobileNavLink to="/yonetim" onClick={toggleMenu}>
+                    <Settings className="h-4 w-4 mr-2" />
                     Yönetim Paneli
                   </MobileNavLink>
                 )}

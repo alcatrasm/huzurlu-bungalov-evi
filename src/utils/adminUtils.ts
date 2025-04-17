@@ -39,6 +39,7 @@ export const makeUserAdmin = async (userId: string): Promise<boolean> => {
     }
     
     console.log('Successfully made user an admin');
+    alert('Admin yetkisi verildi. Sayfayı yenileyiniz.');
     return true;
   } catch (error) {
     console.error('Exception making user admin:', error);

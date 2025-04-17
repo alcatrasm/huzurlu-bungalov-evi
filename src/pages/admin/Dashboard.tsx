@@ -3,6 +3,8 @@ import React, { useEffect } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
 import { useAuth } from '@/contexts/AuthContext';
 import { makeUserAdmin } from '@/utils/adminUtils';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { BarChart3, Calendar, CreditCard, Users } from 'lucide-react';
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -22,33 +24,70 @@ const Dashboard = () => {
     <AdminLayout>
       <h1 className="text-2xl font-bold mb-6">Yönetim Paneli</h1>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        <div className="bg-white p-6 rounded-lg shadow border border-gray-100">
-          <h3 className="text-lg font-semibold mb-2">Toplam Rezervasyon</h3>
-          <p className="text-3xl font-bold text-nature-600">--</p>
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+            <CardTitle className="text-sm font-medium">Toplam Rezervasyon</CardTitle>
+            <Calendar className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">0</div>
+            <p className="text-xs text-muted-foreground">Tüm zamanların rezervasyon sayısı</p>
+          </CardContent>
+        </Card>
         
-        <div className="bg-white p-6 rounded-lg shadow border border-gray-100">
-          <h3 className="text-lg font-semibold mb-2">Toplam Gelir</h3>
-          <p className="text-3xl font-bold text-earth-600">--₺</p>
-        </div>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+            <CardTitle className="text-sm font-medium">Toplam Gelir</CardTitle>
+            <CreditCard className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">0₺</div>
+            <p className="text-xs text-muted-foreground">Tüm zamanların geliri</p>
+          </CardContent>
+        </Card>
         
-        <div className="bg-white p-6 rounded-lg shadow border border-gray-100">
-          <h3 className="text-lg font-semibold mb-2">Kayıtlı Kullanıcı</h3>
-          <p className="text-3xl font-bold text-blue-600">--</p>
-        </div>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+            <CardTitle className="text-sm font-medium">Kayıtlı Kullanıcı</CardTitle>
+            <Users className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">0</div>
+            <p className="text-xs text-muted-foreground">Toplam kayıtlı kullanıcı sayısı</p>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+            <CardTitle className="text-sm font-medium">Doluluk Oranı</CardTitle>
+            <BarChart3 className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">0%</div>
+            <p className="text-xs text-muted-foreground">Bu ayki doluluk oranı</p>
+          </CardContent>
+        </Card>
       </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white p-6 rounded-lg shadow border border-gray-100">
-          <h3 className="text-lg font-semibold mb-4">Son Rezervasyonlar</h3>
-          <p className="text-gray-500">Henüz rezervasyon bulunmuyor.</p>
-        </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>Son Rezervasyonlar</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-muted-foreground">Henüz rezervasyon bulunmuyor.</p>
+          </CardContent>
+        </Card>
         
-        <div className="bg-white p-6 rounded-lg shadow border border-gray-100">
-          <h3 className="text-lg font-semibold mb-4">Yeni Mesajlar</h3>
-          <p className="text-gray-500">Henüz mesaj bulunmuyor.</p>
-        </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>Yeni Mesajlar</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-muted-foreground">Henüz mesaj bulunmuyor.</p>
+          </CardContent>
+        </Card>
       </div>
     </AdminLayout>
   );

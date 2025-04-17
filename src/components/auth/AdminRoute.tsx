@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/components/ui/use-toast';
@@ -12,18 +12,24 @@ const AdminRoute: React.FC<AdminRouteProps> = ({ children }) => {
   const { user, loading, isAdmin, checkAdminStatus } = useAuth();
   const { toast } = useToast();
   const location = useLocation();
+  const [checkingAdmin, setCheckingAdmin] = useState(true);
   
   // Debug admin status
   console.log("AdminRoute - User:", user?.id, "isAdmin:", isAdmin, "loading:", loading);
   
   // Force re-check admin status when this component mounts
   useEffect(() => {
-    if (user) {
-      checkAdminStatus(user.id);
-    }
+    const verifyAdminStatus = async () => {
+      if (user) {
+        await checkAdminStatus(user.id);
+      }
+      setCheckingAdmin(false);
+    };
+    
+    verifyAdminStatus();
   }, [user, checkAdminStatus]);
   
-  if (loading) {
+  if (loading || checkingAdmin) {
     return <div className="flex items-center justify-center min-h-screen">
       <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-nature-500"></div>
     </div>;
@@ -36,7 +42,7 @@ const AdminRoute: React.FC<AdminRouteProps> = ({ children }) => {
       description: "Yönetim paneline erişmek için giriş yapmalısınız.",
       variant: "destructive"
     });
-    return <Navigate to="/giris" replace state={{ from: location }} />;
+    return <Navigate to="/giris" replace state={{ from: location, adminRedirect: true }} />;
   }
   
   if (!isAdmin) {

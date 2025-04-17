@@ -49,13 +49,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return;
       }
       
-      if (data) {
-        console.log("Admin role confirmed for user", userId);
-        setIsAdmin(true);
-      } else {
-        console.log("User is not admin:", userId);
-        setIsAdmin(false);
-      }
+      const hasAdminRole = !!data;
+      console.log("Admin check result:", hasAdminRole ? "Is admin" : "Not admin");
+      setIsAdmin(hasAdminRole);
+      
+      return;
     } catch (error) {
       console.error('Exception checking admin status:', error);
       setIsAdmin(false);
@@ -63,37 +61,45 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   useEffect(() => {
-    // Set up auth state listener FIRST
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        console.log("Auth state changed:", event, session?.user?.id);
-        setSession(session);
-        setUser(session?.user ?? null);
-        
-        // Check if user is admin
-        if (session?.user) {
-          await checkAdminStatus(session.user.id);
-        } else {
-          setIsAdmin(false);
+    const setupAuth = async () => {
+      setLoading(true);
+      
+      // Set up auth state listener FIRST
+      const { data: { subscription } } = supabase.auth.onAuthStateChange(
+        async (event, newSession) => {
+          console.log("Auth state changed:", event, newSession?.user?.id);
+          setSession(newSession);
+          setUser(newSession?.user ?? null);
+          
+          // Check if user is admin - but don't set loading here
+          if (newSession?.user) {
+            setTimeout(() => {
+              // Use setTimeout to prevent Supabase auth deadlock
+              checkAdminStatus(newSession.user.id);
+            }, 0);
+          } else {
+            setIsAdmin(false);
+          }
         }
-      }
-    );
+      );
 
-    // THEN check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      console.log("Initial session check:", session?.user?.id);
-      setSession(session);
-      setUser(session?.user ?? null);
+      // THEN check for existing session
+      const { data: { session: initialSession } } = await supabase.auth.getSession();
+      console.log("Initial session check:", initialSession?.user?.id);
+      setSession(initialSession);
+      setUser(initialSession?.user ?? null);
       
       // Check if user is admin
-      if (session?.user) {
-        checkAdminStatus(session.user.id);
+      if (initialSession?.user) {
+        await checkAdminStatus(initialSession.user.id);
       }
       
       setLoading(false);
-    });
-
-    return () => subscription.unsubscribe();
+      
+      return () => subscription.unsubscribe();
+    };
+    
+    setupAuth();
   }, []);
 
   const signUp = async (email: string, password: string) => {
