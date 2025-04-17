@@ -30,7 +30,7 @@ export const StaticPagesList = () => {
         }
         
         console.log('Pages data:', data);
-        setPages(data as unknown as StaticPage[]);
+        setPages(data as StaticPage[]);
       } catch (error) {
         console.error('Error fetching pages:', error);
         toast({

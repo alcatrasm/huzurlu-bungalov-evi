@@ -29,7 +29,7 @@ const StaticPageViewer = ({ defaultSlug }: StaticPageViewerProps) => {
           .from('static_pages')
           .select('*')
           .eq('slug', slug)
-          .maybeSingle();
+          .single();
           
         if (error) {
           console.error('Error fetching page:', error);
@@ -38,7 +38,7 @@ const StaticPageViewer = ({ defaultSlug }: StaticPageViewerProps) => {
         
         if (data) {
           console.log('Page data:', data);
-          setPage(data as unknown as StaticPage);
+          setPage(data as StaticPage);
           
           // Update page meta data
           if (data.meta_title) {

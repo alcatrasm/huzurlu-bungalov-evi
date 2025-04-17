@@ -18,15 +18,22 @@ const StaticPageEditor = () => {
   
   const [page, setPage] = useState<StaticPage | null>(null);
   const [title, setTitle] = useState('');
+  const [pageSlug, setPageSlug] = useState('');
   const [content, setContent] = useState('');
   const [metaTitle, setMetaTitle] = useState('');
   const [metaDescription, setMetaDescription] = useState('');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [isNew, setIsNew] = useState(false);
   
   useEffect(() => {
     const fetchPage = async () => {
-      if (!slug) return;
+      if (!slug) {
+        // New page
+        setIsNew(true);
+        setLoading(false);
+        return;
+      }
       
       try {
         console.log('Fetching page with slug:', slug);
@@ -34,7 +41,7 @@ const StaticPageEditor = () => {
           .from('static_pages')
           .select('*')
           .eq('slug', slug)
-          .maybeSingle();
+          .single();
           
         if (error) {
           console.error('Error fetching page:', error);
@@ -43,8 +50,9 @@ const StaticPageEditor = () => {
         
         if (data) {
           console.log('Page data:', data);
-          setPage(data as unknown as StaticPage);
+          setPage(data as StaticPage);
           setTitle(data.title || '');
+          setPageSlug(data.slug || '');
           setContent(data.content || '');
           setMetaTitle(data.meta_title || '');
           setMetaDescription(data.meta_description || '');
@@ -72,32 +80,74 @@ const StaticPageEditor = () => {
   }, [slug, navigate, toast]);
   
   const handleSave = async () => {
-    if (!page) return;
+    if (!title || !pageSlug || !content) {
+      toast({
+        title: "Eksik bilgi",
+        description: "Lütfen başlık, slug ve içerik alanlarını doldurunuz.",
+        variant: "destructive"
+      });
+      return;
+    }
     
     setSaving(true);
     
     try {
-      console.log('Updating page:', page.id);
-      const { error } = await supabase
-        .from('static_pages')
-        .update({
-          title,
-          content,
-          meta_title: metaTitle || null,
-          meta_description: metaDescription || null,
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', page.id);
+      if (isNew) {
+        // Create new page
+        console.log('Creating new page');
+        const { data, error } = await supabase
+          .from('static_pages')
+          .insert({
+            title,
+            slug: pageSlug,
+            content,
+            meta_title: metaTitle || null,
+            meta_description: metaDescription || null
+          })
+          .select()
+          .single();
+          
+        if (error) {
+          console.error('Error creating page:', error);
+          throw error;
+        }
         
-      if (error) {
-        console.error('Error saving page:', error);
-        throw error;
+        toast({
+          title: "Sayfa oluşturuldu",
+          description: "Yeni sayfa başarıyla oluşturuldu.",
+        });
+        
+        navigate(`/yonetim/sayfalar/duzenle/${data.slug}`);
+      } else if (page) {
+        // Update existing page
+        console.log('Updating page:', page.id);
+        const { error } = await supabase
+          .from('static_pages')
+          .update({
+            title,
+            slug: pageSlug,
+            content,
+            meta_title: metaTitle || null,
+            meta_description: metaDescription || null,
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', page.id);
+          
+        if (error) {
+          console.error('Error saving page:', error);
+          throw error;
+        }
+        
+        toast({
+          title: "Sayfa güncellendi",
+          description: "Sayfa içeriği başarıyla kaydedildi.",
+        });
+        
+        if (pageSlug !== slug) {
+          // If slug changed, redirect to the new URL
+          navigate(`/yonetim/sayfalar/duzenle/${pageSlug}`);
+        }
       }
-      
-      toast({
-        title: "Sayfa güncellendi",
-        description: "Sayfa içeriği başarıyla kaydedildi.",
-      });
     } catch (error) {
       console.error('Error saving page:', error);
       toast({
@@ -110,6 +160,24 @@ const StaticPageEditor = () => {
     }
   };
   
+  const generateSlugFromTitle = () => {
+    if (title && (!pageSlug || pageSlug === slug)) {
+      const newSlug = title
+        .toLowerCase()
+        .replace(/ğ/g, 'g')
+        .replace(/ü/g, 'u')
+        .replace(/ş/g, 's')
+        .replace(/ı/g, 'i')
+        .replace(/ö/g, 'o')
+        .replace(/ç/g, 'c')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '');
+      
+      setPageSlug(newSlug);
+    }
+  };
+  
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -118,14 +186,10 @@ const StaticPageEditor = () => {
     );
   }
   
-  if (!page) {
-    return null;
-  }
-  
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Sayfa Düzenleme - {page.title}</CardTitle>
+        <CardTitle>{isNew ? 'Yeni Sayfa Oluştur' : `Sayfa Düzenleme - ${page?.title}`}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-2">
@@ -134,8 +198,23 @@ const StaticPageEditor = () => {
             id="title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+            onBlur={generateSlugFromTitle}
             placeholder="Sayfa başlığını girin"
           />
+        </div>
+        
+        <div className="space-y-2">
+          <Label htmlFor="slug">Sayfa URL (Slug)</Label>
+          <Input
+            id="slug"
+            value={pageSlug}
+            onChange={(e) => setPageSlug(e.target.value)}
+            placeholder="sayfa-url-adresi"
+            className="font-mono"
+          />
+          <p className="text-xs text-gray-500">
+            URL adresinde sadece küçük harfler, rakamlar ve tire (-) kullanılabilir.
+          </p>
         </div>
         
         <div className="space-y-2">
@@ -201,7 +280,7 @@ const StaticPageEditor = () => {
           ) : (
             <>
               <Save className="mr-2 h-4 w-4" />
-              Kaydet
+              {isNew ? 'Oluştur' : 'Kaydet'}
             </>
           )}
         </Button>
